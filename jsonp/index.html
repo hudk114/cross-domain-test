@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jsonp</title>
+</head>
+<body>
+  <ol>
+    <li>
+      <b>jsonp原理</b>
+      <pre>
+        <code>
+          // 首先定义回调函数
+          function exec(data) {
+            console.log(data);
+          }
+
+          // 之后挂载一个script
+          var s = document.createElement('script');
+          s.src = 'http://localhost:31311/jsonp?callback=exec';
+          document.body.appendChild(s);
+          document.body.removeChild(s);
+        </code>
+        <button class="button">open your console and click</button>
+      </pre>
+    </li>
+    <li>
+      <b>简单的jsonp封装</b>
+      <pre>
+        <code>
+          // 只实现fn与url两个形参
+          function jsonp (url, fn) {
+            // demo不考虑覆盖的问题
+            window.callback = fn;
+
+            var s = document.createElement('script');
+            s.src = url + '/jsonp?callback=callback';
+            document.body.appendChild(s);
+            document.body.removeChild(s);
+          }
+
+          jsonp('http://localhost:31311', function (data) {
+            console.log(data);
+          });
+        </code>
+        <button class="button">open your console and click</button>
+      </pre>
+    </li>
+  </ol>
+  <script src="/client/public/request.js"></script>
+  <script src="/client/public/code2script.js"></script>
+  <script>
+    document.cookie += (document.cookie !== '' ? ';' : '') + 'name=hudk';
+
+    document.body.addEventListener('click', function (event) {
+      var ele = event.target;
+      if (!(ele.attributes.class && ele.attributes.class.textContent.indexOf('button') > -1)) {
+        return;
+      }
+
+      code2script(ele.parentElement.getElementsByTagName('code')[0].textContent);
+    });
+  </script>
+</body>
+</html>
