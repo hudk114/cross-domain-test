@@ -3,6 +3,6 @@ const router = express.Router();
 
 router.use('/cors', require('./cors'));
 router.use('/jsonp', require('./jsonp'));
-// router.use('/cors', require('./cors'));
+router.use('/iframe', require('./iframe'));
 
 module.exports = router;

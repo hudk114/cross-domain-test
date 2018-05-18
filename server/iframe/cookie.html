@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div>test</div>
+  <button id="button">click</button>
+  <script>
+    document.getElementById('button').onclick = function () {
+      // ajax
+      fetch('http://localhost:31311/iframe/cookie', {
+        credentials: 'include',
+      });
+    };
+
+    window.addEventListener('message', function(event) {
+      if (event.origin.indexOf('41311') === -1) {
+        return;
+      }
+
+      // 设置cookie
+      document.cookie = event.data.cookie;
+
+      // ajax
+      fetch('http://localhost:31311/iframe/cookie', {
+        credentials: 'include',
+      }).then(function (res) {
+        res.text().then(function (data) {
+          event.source.postMessage(data, event.origin);
+        })
+      });
+    });
+  </script>
+</body>
+</html>

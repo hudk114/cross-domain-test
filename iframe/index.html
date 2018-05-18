@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>iframe</title>
+</head>
+<body>
+  <ol>
+    <li>
+      <b>iframe原理</b>
+      <pre>
+        <code>
+          // 挂载一个空白iframe
+          var f = document.createElement('iframe');
+          document.body.appendChild(f);
+          
+          // 第一次onload的时候用于赋值，重定向；第二次的时候才获取
+          var state = false;
+
+          f.onload = function () {
+            if (!state) {
+              state = true;
+
+              // 设置成和页面同域即可
+              f.src = 'http://localhost:41311/jsonp/index.html';
+            } else {
+              // 与iframe传值，这里采用window.name
+              console.log(f.contentWindow.name);
+              document.body.removeChild(f);
+              f = null;
+            }
+          }
+
+          f.src = 'http://localhost:31311/iframe/name.html';
+        </code>
+        <button class="button">open your console and click</button>
+      </pre>
+    </li>
+    <li>
+      <b>采用postMessage传值</b>
+      <pre>
+        <code>
+          var f = document.createElement('iframe');
+          document.body.appendChild(f);
+          
+          window.addEventListener('message', function(event) {
+            if (event.origin !== 'http://localhost:31311') {
+              return;
+            }
+            console.log(event.data);
+            document.body.removeChild(f);
+            f = null;
+          });
+      
+          f.onload = function () {
+            f.contentWindow.postMessage('', 'http://localhost:31311');
+          };
+
+          f.src = 'http://localhost:31311/iframe/post-message.html';
+        </code>
+        <button class="button">open your console and click</button>
+      </pre>
+    </li>
+    <li>
+      <a href="/iframe/cookie.html">传递cookie</a>
+    </li>
+  </ol>
+  <iframe src="http://localhost:31311/iframe/name.html" frameborder="0"></iframe>
+  <script src="/client/public/request.js"></script>
+  <script src="/client/public/code2script.js"></script>
+  <script>
+    document.cookie += (document.cookie !== '' ? ';' : '') + 'name=hudk';
+
+    document.body.addEventListener('click', function (event) {
+      var ele = event.target;
+      if (!(ele.attributes.class && ele.attributes.class.textContent.indexOf('button') > -1)) {
+        return;
+      }
+
+      code2script(ele.parentElement.getElementsByTagName('code')[0].textContent);
+    });
+  </script>
+</body>
+</html>

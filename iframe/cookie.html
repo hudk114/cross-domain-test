@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>cookie</title>
+</head>
+<body>
+  <script>
+    // 设置cookie
+    document.cookie='nnn=hhh;';
+  </script>
+
+  <script>
+    var f = document.createElement('iframe');
+    document.body.appendChild(f);
+  
+    window.addEventListener('message', function(event) {
+      if (event.origin !== 'http://localhost:31311') {
+        return;
+      }
+
+      console.log(event.data);
+
+      // document.body.removeChild(f);
+      // f = null;
+    });
+
+    f.onload = function () {
+      f.contentWindow.postMessage(
+        {
+          cookie: document.cookie
+        },
+        'http://localhost:31311'
+      );
+    };
+
+    f.src = 'http://localhost:31311/iframe/cookie.html';
+  </script>
+</body>
+</html>
