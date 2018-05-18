@@ -1,0 +1,22 @@
+{
+  "name": "cross-domain-test",
+  "description": "several ways for cross domain, learning and summary",
+  "scripts": {
+    "start": "node client/app.js",
+    "server": "node server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hudk114/cross-domain-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hudk114/cross-domain-test/issues"
+  },
+  "homepage": "https://github.com/hudk114/cross-domain-test#readme",
+  "devDependencies": {
+    "express": "^4.16.3",
+    "opn": "^5.3.0"
+  }
+}
