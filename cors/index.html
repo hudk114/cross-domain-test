@@ -37,10 +37,21 @@
       <pre>
         <code>
           fetch('http://localhost:31311/cors/get', {
-            credentials: 'inclue',
+            credentials: 'include',
             headers: {
               'Content-Type': 'text/json'
             }
+          }).then(function(response) {
+            console.log(response);
+          });
+
+          fetch('http://localhost:31311/cors/post', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'text/json'
+            },
+            body: JSON.stringify({ name: 'hudk' })
           }).then(function(response) {
             console.log(response);
           });
